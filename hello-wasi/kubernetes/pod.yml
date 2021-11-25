@@ -1,0 +1,36 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: hello-wasi
+spec:
+  containers:
+  - name: main
+    image: foobar.azurecr.io/hello-wasi:0.0.1
+    env:
+     - name: TARGET
+       value: /mnt/data
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 100m
+        memory: 64Mi
+    volumeMounts:
+    - mountPath: /mnt/data
+      name: volume
+  imagePullSecrets:
+    - name: acr
+  volumes:
+    - name: volume
+      hostPath:
+        path: /Users/bob/Downloads/
+  tolerations:
+    - key: "kubernetes.io/arch"
+      operator: "Equal"
+      value: "wasm32-wasi"
+      effect: "NoExecute"
+    - key: "kubernetes.io/arch"
+      operator: "Equal"
+      value: "wasm32-wasi"
+      effect: "NoSchedule"

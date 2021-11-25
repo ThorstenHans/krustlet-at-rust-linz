@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hallo-krustlet
+  labels:
+    name: hallo-krustlet
+spec:
+  containers:
+  - name: hallo-krustlet
+    image: foobar.azurecr.io/hello-krustlet:0.0.1
+    resources:
+      requests:
+        memory: "16Mi"
+        cpu : "10m"
+      limits:
+        memory: "32Mi"
+        cpu: "25m"
+  imagePullSecrets:
+    - name: acr
+  tolerations:
+    - key: "kubernetes.io/arch"
+      operator: "Equal"
+      value: "wasm32-wasi"
+      effect: "NoExecute"
+    - key: "kubernetes.io/arch"
+      operator: "Equal"
+      value: "wasm32-wasi"
+      effect: "NoSchedule"
